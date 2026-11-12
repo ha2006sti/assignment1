@@ -58,19 +58,24 @@ public abstract class Car implements Movable {
 
     public abstract double speedFactor();
     private void incrementSpeed(double amount) {
-            currentSpeed = getCurrentSpeed() + speedFactor() * amount;
+        currentSpeed = Math.min(enginePower, getCurrentSpeed() + speedFactor() * amount);
         }
     private void decrementSpeed(double amount) {
-            currentSpeed = getCurrentSpeed() - speedFactor() * amount;
+        currentSpeed = Math.max(0, getCurrentSpeed() - speedFactor() * amount);
         }
-        public void gas(double amount) {
+        public void gas(double amount) {if (amount < 0 || amount > 1) {
+            return;
+        }
             incrementSpeed(amount);
+
         }
 
-        public void brake(double amount) {
-            decrementSpeed(amount);
+    public void brake(double amount) {
+        if (amount < 0 || amount > 1) {
+            return;
         }
-
+        decrementSpeed(amount);
+    }
     @Override
     public void turnRight() {
         direction++;
@@ -88,7 +93,8 @@ public abstract class Car implements Movable {
         direction = 3;
         }
     }
-
+    
+// 0 = North, 1 = East, 2 = South, 3 = West
     @Override
     public void move(){
         if (direction==0){
@@ -105,5 +111,7 @@ public abstract class Car implements Movable {
         }
     }
     }
+
+
 
 
